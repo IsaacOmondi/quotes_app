@@ -1,28 +1,43 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="container">
+    <app-progress-bar :quoteCount="quotes.length" :maxQuotes="maxQuotes"></app-progress-bar>
+    <app-new-quote @quoteAdded="newQuote"></app-new-quote>
+    <app-quote-grid :quotes="quotes" @quoteDeleted="deleteQuote"></app-quote-grid>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import QuoteGrid from "./components/QuoteGrid.vue";
+import NewQuote from "./components/NewQuote.vue";
+import ProgressBar from "./components/ProgressBar.vue";
 
 export default {
-  name: 'app',
+  data: function() {
+    return {
+      maxQuotes: 10,
+      quotes: ["Just a quote"]
+    };
+  },
   components: {
-    HelloWorld
+    appQuoteGrid: QuoteGrid,
+    appNewQuote: NewQuote,
+    appProgressBar: ProgressBar
+  },
+  methods: {
+    newQuote(quote) {
+      console.log(this.quotes.length)
+      if (this.quotes.length >= this.maxQuotes) {
+        alert("Only 10 quotes are allowed");
+      } else {
+        this.quotes.push(quote);
+      }
+    },
+    deleteQuote(index) {
+      this.quotes.splice(index, 1);
+    }
   }
-}
+};
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>
